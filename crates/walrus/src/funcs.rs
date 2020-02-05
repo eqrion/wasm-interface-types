@@ -22,6 +22,12 @@ pub enum FuncKind {
     Local(Vec<Instruction>),
 }
 
+#[derive(Debug, Copy, Clone)]
+pub struct Store {
+    pub offset: u32,
+    pub mem: walrus::MemoryId,
+}
+
 #[derive(Debug, Clone)]
 pub enum Instruction {
     CallCore(walrus::FunctionId),
@@ -43,6 +49,13 @@ pub enum Instruction {
         output: ValType,
         trap: bool,
     },
+    I32Store(Store),
+    I32Store16(Store),
+    I32Store8(Store),
+    I64Store(Store),
+    I64Store32(Store),
+    I64Store16(Store),
+    I64Store8(Store),
 }
 
 pub type FuncId = Id<Func>;
@@ -135,6 +148,35 @@ impl WasmInterfaceTypes {
                     R::S64ToI64 => i2w(VT::S64, RVT::I64, false),
                     R::U64ToI64 => i2w(VT::U64, RVT::I64, false),
 
+                    R::I32Store(store) => W::I32Store(Store {
+                        offset: store.offset,
+                        mem: ids.get_memory(store.mem)?,
+                    }),
+                    R::I32Store16(store) => W::I32Store16(Store {
+                        offset: store.offset,
+                        mem: ids.get_memory(store.mem)?,
+                    }),
+                    R::I32Store8(store) => W::I32Store8(Store {
+                        offset: store.offset,
+                        mem: ids.get_memory(store.mem)?,
+                    }),
+                    R::I64Store(store) => W::I64Store(Store {
+                        offset: store.offset,
+                        mem: ids.get_memory(store.mem)?,
+                    }),
+                    R::I64Store32(store) => W::I64Store32(Store {
+                        offset: store.offset,
+                        mem: ids.get_memory(store.mem)?,
+                    }),
+                    R::I64Store16(store) => W::I64Store16(Store {
+                        offset: store.offset,
+                        mem: ids.get_memory(store.mem)?,
+                    }),
+                    R::I64Store8(store) => W::I64Store8(Store {
+                        offset: store.offset,
+                        mem: ids.get_memory(store.mem)?,
+                    }),
+
                     R::End => continue,
                 });
             }
@@ -194,6 +236,28 @@ impl WasmInterfaceTypes {
                         output,
                         trap,
                     } => w2i(&mut w, input, output, trap),
+
+                    I32Store(store) => {
+                        w.i32_store(store.offset, ids.get_memory_index(store.mem));
+                    },
+                    I32Store16(store) => {
+                        w.i32_store16(store.offset, ids.get_memory_index(store.mem));
+                    },
+                    I32Store8(store) => {
+                        w.i32_store8(store.offset, ids.get_memory_index(store.mem));
+                    },
+                    I64Store(store) => {
+                        w.i64_store(store.offset, ids.get_memory_index(store.mem));
+                    },
+                    I64Store32(store) => {
+                        w.i64_store32(store.offset, ids.get_memory_index(store.mem));
+                    },
+                    I64Store16(store) => {
+                        w.i64_store16(store.offset, ids.get_memory_index(store.mem));
+                    },
+                    I64Store8(store) => {
+                        w.i64_store8(store.offset, ids.get_memory_index(store.mem));
+                    },
                 }
             }
         }

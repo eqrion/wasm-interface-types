@@ -421,6 +421,20 @@ impl<'a> Validator<'a> {
                 self.expect_interface(ValType::U64, stack)?;
                 stack.push(wasm2adapter(wasmparser::Type::I64)?);
             }
+
+            I32Store(_) |
+            I32Store16(_) |
+            I32Store8(_) => {
+                self.expect_wasm(wasmparser::Type::I32, stack)?;
+                self.expect_wasm(wasmparser::Type::I32, stack)?;
+            }
+            I64Store(_) |
+            I64Store32(_) |
+            I64Store16(_) |
+            I64Store8(_) => {
+                self.expect_wasm(wasmparser::Type::I32, stack)?;
+                self.expect_wasm(wasmparser::Type::I64, stack)?;
+            }
         }
         Ok(())
     }

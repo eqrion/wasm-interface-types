@@ -561,6 +561,15 @@ instructions! {
         U32ToI64 = 0x2b,
         S64ToI64 = 0x2c,
         U64ToI64 = 0x2d,
+
+        I32Store(Store) = 0x030,
+        I32Store16(Store) = 0x031,
+        I32Store8(Store) = 0x032,
+
+        I64Store(Store) = 0x033,
+        I64Store32(Store) = 0x034,
+        I64Store16(Store) = 0x035,
+        I64Store8(Store) = 0x036,
     }
 }
 
@@ -578,6 +587,23 @@ impl<'a> Parse<'a> for StringToMemory {
     fn parse(parser: &mut Parser<'a>) -> Result<Self> {
         Ok(StringToMemory {
             malloc: parser.parse()?,
+            mem: parser.parse()?,
+        })
+    }
+}
+
+/// Payload of a `store` instruction
+pub struct Store {
+    /// Static offset of the store.
+    pub offset: u32,
+    /// Memory index that the string will be placed into.
+    pub mem: u32,
+}
+
+impl<'a> Parse<'a> for Store {
+    fn parse(parser: &mut Parser<'a>) -> Result<Self> {
+        Ok(Store {
+            offset: parser.parse()?,
             mem: parser.parse()?,
         })
     }

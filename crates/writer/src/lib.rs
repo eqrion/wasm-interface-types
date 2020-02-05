@@ -320,6 +320,42 @@ impl Instructions<'_, '_> {
     pub fn u32_to_i64(&mut self) { self.tmp.push(0x2b) }
     pub fn s64_to_i64(&mut self) { self.tmp.push(0x2c) }
     pub fn u64_to_i64(&mut self) { self.tmp.push(0x2d) }
+
+    pub fn i32_store(&mut self, offset: u32, mem: u32) {
+        self.tmp.push(0x30);
+        offset.encode(&mut self.tmp);
+        mem.encode(&mut self.tmp);
+    }
+    pub fn i32_store16(&mut self, offset: u32, mem: u32) {
+        self.tmp.push(0x31);
+        offset.encode(&mut self.tmp);
+        mem.encode(&mut self.tmp);
+    }
+    pub fn i32_store8(&mut self, offset: u32, mem: u32) {
+        self.tmp.push(0x32);
+        offset.encode(&mut self.tmp);
+        mem.encode(&mut self.tmp);
+    }
+    pub fn i64_store(&mut self, offset: u32, mem: u32) {
+        self.tmp.push(0x33);
+        offset.encode(&mut self.tmp);
+        mem.encode(&mut self.tmp);
+    }
+    pub fn i64_store32(&mut self, offset: u32, mem: u32) {
+        self.tmp.push(0x34);
+        offset.encode(&mut self.tmp);
+        mem.encode(&mut self.tmp);
+    }
+    pub fn i64_store16(&mut self, offset: u32, mem: u32) {
+        self.tmp.push(0x35);
+        offset.encode(&mut self.tmp);
+        mem.encode(&mut self.tmp);
+    }
+    pub fn i64_store8(&mut self, offset: u32, mem: u32) {
+        self.tmp.push(0x36);
+        offset.encode(&mut self.tmp);
+        mem.encode(&mut self.tmp);
+    }
 }
 
 impl Drop for Instructions<'_, '_> {

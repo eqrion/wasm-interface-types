@@ -146,6 +146,16 @@ fn print_wit(printer: &mut Printer, offset: usize, bytes: &[u8]) -> anyhow::Resu
         }
     }
 
+    fn push_store(ret: &mut Printer, store: &Store) -> anyhow::Result<()> {
+        if store.offset != 0 {
+            write!(ret.result_mut(), " offset={}", store.offset)?;
+        }
+        if store.mem != 0 {
+            write!(ret.result_mut(), " mem={}", store.mem)?;
+        }
+        Ok(())
+    }
+
     fn push_instr(ret: &mut Printer, instr: &Instruction) -> anyhow::Result<()> {
         use Instruction::*;
 
@@ -217,6 +227,36 @@ fn print_wit(printer: &mut Printer, offset: usize, bytes: &[u8]) -> anyhow::Resu
             U32ToI64 => ret.result_mut().push_str("u32-to-i64"),
             S64ToI64 => ret.result_mut().push_str("s64-to-i64"),
             U64ToI64 => ret.result_mut().push_str("u64-to-i64"),
+
+            I32Store(payload) => {
+                ret.result_mut().push_str("i32.store");
+                push_store(ret, payload)?;
+            },
+            I32Store16(payload) => {
+                ret.result_mut().push_str("i32.store_16");
+                push_store(ret, payload)?;
+            },
+            I32Store8(payload) => {
+                ret.result_mut().push_str("i32.store_8");
+                push_store(ret, payload)?;
+            },
+
+            I64Store(payload) => {
+                ret.result_mut().push_str("i64.store");
+                push_store(ret, payload)?;
+            },
+            I64Store32(payload) => {
+                ret.result_mut().push_str("i64.store_32");
+                push_store(ret, payload)?;
+            },
+            I64Store16(payload) => {
+                ret.result_mut().push_str("i64.store_16");
+                push_store(ret, payload)?;
+            },
+            I64Store8(payload) => {
+                ret.result_mut().push_str("i64.store_8");
+                push_store(ret, payload)?;
+            },
         }
 
         Ok(())
