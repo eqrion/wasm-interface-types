@@ -56,6 +56,9 @@ pub enum Instruction {
     I64Store32(Store),
     I64Store16(Store),
     I64Store8(Store),
+    BoolFromI32,
+    I32FromBool,
+    AnyrefTableTee,
 }
 
 pub type FuncId = Id<Func>;
@@ -177,6 +180,10 @@ impl WasmInterfaceTypes {
                         mem: ids.get_memory(store.mem)?,
                     }),
 
+                    R::BoolFromI32 => W::BoolFromI32,
+                    R::I32FromBool => W::I32FromBool,
+                    R::AnyrefTableTee => W::AnyrefTableTee,
+
                     R::End => continue,
                 });
             }
@@ -257,6 +264,15 @@ impl WasmInterfaceTypes {
                     },
                     I64Store8(store) => {
                         w.i64_store8(store.offset, ids.get_memory_index(store.mem));
+                    },
+                    BoolFromI32 => {
+                        w.bool_from_i32();
+                    },
+                    I32FromBool => {
+                        w.i32_from_bool();
+                    },
+                    AnyrefTableTee => {
+                        w.anyref_table_tee();
                     },
                 }
             }

@@ -140,6 +140,7 @@ fn print_wit(printer: &mut Printer, offset: usize, bytes: &[u8]) -> anyhow::Resu
             ValType::F32 => ret.push_str("f32"),
             ValType::F64 => ret.push_str("f64"),
             ValType::String => ret.push_str("string"),
+            ValType::Bool => ret.push_str("bool"),
             ValType::Anyref => ret.push_str("anyref"),
             ValType::I32 => ret.push_str("i32"),
             ValType::I64 => ret.push_str("i64"),
@@ -256,6 +257,15 @@ fn print_wit(printer: &mut Printer, offset: usize, bytes: &[u8]) -> anyhow::Resu
             I64Store8(payload) => {
                 ret.result_mut().push_str("i64.store_8");
                 push_store(ret, payload)?;
+            },
+            BoolFromI32 => {
+                ret.result_mut().push_str("bool-from-i32");
+            },
+            I32FromBool => {
+                ret.result_mut().push_str("i32-from-bool");
+            },
+            AnyrefTableTee => {
+                ret.result_mut().push_str("anyref-table-tee");
             },
         }
 

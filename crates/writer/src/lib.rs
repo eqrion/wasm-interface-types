@@ -186,9 +186,10 @@ impl Type<'_> {
     pub fn f32(&mut self) { self.ty(0x08) }
     pub fn f64(&mut self) { self.ty(0x09) }
     pub fn string(&mut self) { self.ty(0x0a) }
-    pub fn anyref(&mut self) { self.ty(0x0b) }
-    pub fn i32(&mut self) { self.ty(0x0c) }
-    pub fn i64(&mut self) { self.ty(0x0d) }
+    pub fn bool(&mut self) { self.ty(0x0b) }
+    pub fn anyref(&mut self) { self.ty(0x0c) }
+    pub fn i32(&mut self) { self.ty(0x0d) }
+    pub fn i64(&mut self) { self.ty(0x0e) }
 }
 
 /// Writer for the list of imports in an import subsection.
@@ -355,6 +356,17 @@ impl Instructions<'_, '_> {
         self.tmp.push(0x36);
         offset.encode(&mut self.tmp);
         mem.encode(&mut self.tmp);
+    }
+
+    pub fn bool_from_i32(&mut self) {
+        self.tmp.push(0x37);
+    }
+    pub fn i32_from_bool(&mut self) {
+        self.tmp.push(0x38);
+    }
+
+    pub fn anyref_table_tee(&mut self) {
+        self.tmp.push(0x39);
     }
 }
 

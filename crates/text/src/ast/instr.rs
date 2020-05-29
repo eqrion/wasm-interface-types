@@ -94,6 +94,10 @@ instructions! {
         U32ToI64 : "u32-to-i64",
         S64ToI64 : "s64-to-i64",
         U64ToI64 : "u64-to-i64",
+
+        BoolFromI32 : "bool-from-i32",
+        I32FromBool : "i32-from-bool",
+        AnyrefTableTee : "anyref-table-tee",
     }
 }
 

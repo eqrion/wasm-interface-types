@@ -435,6 +435,19 @@ impl<'a> Validator<'a> {
                 self.expect_wasm(wasmparser::Type::I32, stack)?;
                 self.expect_wasm(wasmparser::Type::I64, stack)?;
             }
+            I32FromBool => {
+                self.expect_interface(ValType::Bool, stack)?;
+                stack.push(wasm2adapter(wasmparser::Type::I32)?);
+            }
+            BoolFromI32 => {
+                self.expect_wasm(wasmparser::Type::I32, stack)?;
+                stack.push(ValType::Bool);
+            }
+            AnyrefTableTee => {
+                self.expect_wasm(wasmparser::Type::I32, stack)?;
+                self.expect_wasm(wasmparser::Type::AnyRef, stack)?;
+                stack.push(wasm2adapter(wasmparser::Type::I32)?);
+            }
         }
         Ok(())
     }

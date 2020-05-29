@@ -22,6 +22,7 @@ mod kw {
     wast::custom_keyword!(s64);
     wast::custom_keyword!(s8);
     wast::custom_keyword!(string);
+    wast::custom_keyword!(bool_ = "bool");
     wast::custom_keyword!(u16);
     wast::custom_keyword!(u32);
     wast::custom_keyword!(u64);

@@ -117,6 +117,11 @@ pub fn append(adapters: &[Adapter<'_>], wasm: &mut Vec<u8>) {
                 U32ToI64 => w.u32_to_i64(),
                 S64ToI64 => w.s64_to_i64(),
                 U64ToI64 => w.u64_to_i64(),
+
+                BoolFromI32 => w.bool_from_i32(),
+                I32FromBool => w.i32_from_bool(),
+                TableGet => w.table_get(),
+                TableSet => w.table_set(),
             }
         }
     }
@@ -167,6 +172,7 @@ fn write_ty(w: &mut wit_writer::Type<'_>, ty: &ValType) {
         ValType::F32 => w.f32(),
         ValType::F64 => w.f64(),
         ValType::String => w.string(),
+        ValType::Bool => w.bool(),
         ValType::Anyref => w.anyref(),
         ValType::I32 => w.i32(),
         ValType::I64 => w.i64(),

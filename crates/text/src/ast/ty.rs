@@ -59,6 +59,7 @@ impl<'a> Parse<'a> for Type<'a> {
 #[allow(missing_docs)]
 pub enum ValType {
     String,
+    Bool,
     Anyref,
     S8,
     S16,
@@ -132,6 +133,10 @@ impl<'a> Parse<'a> for ValType {
         if l.peek::<kw::string>() {
             parser.parse::<kw::string>()?;
             return Ok(ValType::String);
+        }
+        if l.peek::<kw::bool_>() {
+            parser.parse::<kw::bool_>()?;
+            return Ok(ValType::Bool);
         }
         Err(l.error())
     }

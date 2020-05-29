@@ -269,6 +269,7 @@ pub enum ValType {
     F32,
     F64,
     String,
+    Bool,
     Anyref,
     I32,
     I64,
@@ -288,9 +289,10 @@ impl<'a> Parse<'a> for ValType {
             8 => ValType::F32,
             9 => ValType::F64,
             10 => ValType::String,
-            11 => ValType::Anyref,
-            12 => ValType::I32,
-            13 => ValType::I64,
+            11 => ValType::Bool,
+            12 => ValType::Anyref,
+            13 => ValType::I32,
+            14 => ValType::I64,
             n => return Err(parser.error(ErrorKind::InvalidValType(n))),
         })
     }
@@ -570,6 +572,10 @@ instructions! {
         I64Store32(Store) = 0x034,
         I64Store16(Store) = 0x035,
         I64Store8(Store) = 0x036,
+
+        BoolFromI32 = 0x037,
+        I32FromBool = 0x038,
+        AnyrefTableTee = 0x039,
     }
 }
 
